@@ -15,7 +15,7 @@ public class Partenaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotBlank
+
     @Size(min = 3, max = 50)
     private String RS;
 
@@ -45,9 +45,6 @@ public class Partenaire {
 
 
 
-
-
-
     public int getId() {
         return id;
     }
@@ -74,6 +71,22 @@ public class Partenaire {
 
     public String getNinea() {
         return ninea;
+    }
+
+    public List<Compte> getComptes() {
+        return comptes;
+    }
+
+    public void setComptes(List<Compte> comptes) {
+        this.comptes = comptes;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public void setNinea(String ninea) {

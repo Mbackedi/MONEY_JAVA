@@ -61,7 +61,7 @@ public class User{
 
     @JoinColumn(name = "compte_id",referencedColumnName = "id")
     @ManyToOne(optional=false)
-    @JsonIgnoreProperties("user")
+    @JsonIgnoreProperties("users")
     private Compte compte;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -141,5 +141,21 @@ public class User{
 
     public void setStatut(String statut) {
         this.statut = statut;
+    }
+
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
+
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
+
+    public Compte getCompte() {
+        return compte;
+    }
+
+    public void setCompte(Compte compte) {
+        this.compte = compte;
     }
 }

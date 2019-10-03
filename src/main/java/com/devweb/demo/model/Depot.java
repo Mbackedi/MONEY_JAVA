@@ -23,7 +23,7 @@ public class Depot {
     @DateTimeFormat(pattern = "yyyy-MM-dd-mm-ss")
     private Date datedepot;
 
-    @JoinColumn(name = "compte_id",referencedColumnName = "id")
+    @JoinColumn(name = "compte_id",referencedColumnName = "id",nullable=true)
     @ManyToOne(optional=false)
     @JsonIgnoreProperties("depot")
     private Compte compte;
@@ -52,6 +52,11 @@ public class Depot {
         this.datedepot = datedepot;
     }
 
+    public Compte getCompte() {
+        return compte;
+    }
 
-
+    public void setCompte(Compte compte) {
+        this.compte = compte;
+    }
 }

@@ -17,12 +17,9 @@ public class Compte {
     @NotBlank
     @Size(min = 3, max = 50)
     private String numCompte;
-
-    @NotBlank
-    @Size(max = 50)
     private int solde;
 
-    @JoinColumn(name = "partenaire_id",referencedColumnName = "id")
+    @JoinColumn(name = "partenaire_id",referencedColumnName = "id",nullable=true)
     @ManyToOne(optional=false)
     @JsonIgnoreProperties("compte")
     private Partenaire partenaire;
@@ -35,5 +32,51 @@ public class Compte {
     @JsonIgnoreProperties("compte")
     private List<Depot> depots;
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNumCompte() {
+        return numCompte;
+    }
+
+    public void setNumCompte(String numCompte) {
+        this.numCompte = numCompte;
+    }
+
+    public int getSolde() {
+        return solde;
+    }
+
+    public void setSolde(int solde) {
+        this.solde = solde;
+    }
+
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
+
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
+
+    public List<User> getUser() {
+        return user;
+    }
+
+    public void setUser(List<User> user) {
+        this.user = user;
+    }
+
+    public List<Depot> getDepots() {
+        return depots;
+    }
+
+    public void setDepots(List<Depot> depots) {
+        this.depots = depots;
+    }
 }
