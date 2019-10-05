@@ -2,11 +2,14 @@ package com.devweb.demo.controller;
 
 import com.devweb.demo.model.*;
 import com.devweb.demo.repository.CompteRepository;
+import com.devweb.demo.repository.DepotRepository;
 import com.devweb.demo.repository.PartenaireRepository;
 import com.devweb.demo.repository.UserRepository;
 import com.devweb.demo.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +36,7 @@ public class UserController {
     }
     @Autowired
     PasswordEncoder encoder;
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(value = "/add",consumes =(MediaType.APPLICATION_JSON_VALUE))
       public User ajout (@RequestBody(required = false)RegisterUser registerUser){
         User us =new User();
@@ -53,7 +56,7 @@ public class UserController {
        /* User user = userDetailsService.getUserConnecte();
         user.getPartenaire();
         us.setPartenaire(user.getPartenaire());*/
-
+        userRepository.save(us);
         return userRepository.save(us);
     }
 
@@ -87,7 +90,7 @@ public class UserController {
         c.setNumCompte(numcompt);
         //c.setNumeroCompte(nb);
         c.setPartenaire(p);
-        c.setSolde(7500);
+        c.setSolde(750000);
        // c.setUser(u);
         compteRepository.save(c);
 
@@ -111,7 +114,27 @@ public class UserController {
         return partenaireRepository.save(p);
     }
 
+  //DEPOT
 
+    @Autowired
+    DepotRepository depotRepository;
+    @PostMapping(value = "/deposer",consumes =(MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<String> depot (@RequestBody(required = false) RegisterUser  registerUser){
+        Depot d =new Depot();
+        d.setDatedepot(new Date());
+        d.setMontant(registerUser.getMontant());
+        d.setCompte(registerUser.getCompte());
 
+        User user=userDetailsService.getUserConnecte();
+        d.setUser(user);
+
+        //ajout du montant du depot sur le solde du compte
+        //Compte cpt= compteRepository.findById(registerUser.getCompte().getId()).orElseThrow();
+       // cpt.setSolde(cpt.getSolde()+d.getMontant());
+        //compteRepository.save(cpt);
+        depotRepository.save(d);
+
+        return new ResponseEntity<>("depot reussit", HttpStatus.OK);
+    }
 
 }

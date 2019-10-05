@@ -16,7 +16,8 @@ public class Partenaire {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Size(min = 3, max = 50)
+
+    @Size( max = 50)
     private String RS;
 
     @NotBlank

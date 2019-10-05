@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-public class JwtAuthenticationController {
+public class    JwtAuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired

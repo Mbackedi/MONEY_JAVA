@@ -1,32 +1,37 @@
 package com.devweb.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
+
 @Entity
+
 public class Depot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
-    @Size(min = 3, max = 50)
-    private long montant;
 
-    @NotBlank
+    private int montant;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd-mm-ss")
     private Date datedepot;
 
+    @JsonIgnore
     @JoinColumn(name = "compte_id",referencedColumnName = "id",nullable=true)
     @ManyToOne(optional=false)
     @JsonIgnoreProperties("depot")
     private Compte compte;
+
+    @JsonIgnore
+    @JoinColumn(name = "user_id",referencedColumnName = "id",nullable=true)
+    @ManyToOne(optional=false)
+    @JsonIgnoreProperties("user")
+    private User user;
 
     public int getId() {
         return id;
@@ -36,11 +41,11 @@ public class Depot {
         this.id = id;
     }
 
-    public long getMontant() {
+    public int getMontant() {
         return montant;
     }
 
-    public void setMontant(long montant) {
+    public void setMontant(int montant) {
         this.montant = montant;
     }
 
@@ -58,5 +63,13 @@ public class Depot {
 
     public void setCompte(Compte compte) {
         this.compte = compte;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

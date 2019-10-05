@@ -19,16 +19,12 @@ public class RegisterUser {
     private Compte compte;
     private String numCompte;
     private String RS;
-
-
     private String ninea;
-
-
     private String addresse;
-
     private String nomEntreprise;
-
     private int solde;
+    private int montant;
+    private User user;
 
     public String getNumCompte() {
         return numCompte;
@@ -72,9 +68,7 @@ public class RegisterUser {
         this.password = password;
     }
 
-    public String getRS() {
-        return RS;
-    }
+    public String getRS() { return RS; }
 
     public void setRS(String RS) {
         this.RS = RS;
@@ -150,5 +144,21 @@ public class RegisterUser {
 
     public void setCompte(Compte compte) {
         this.compte = compte;
+    }
+
+    public int getMontant() {
+        return montant;
+    }
+
+    public void setMontant(int montant) {
+        this.montant = montant;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
