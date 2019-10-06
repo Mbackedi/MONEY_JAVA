@@ -36,7 +36,7 @@ public class UserController {
     }
     @Autowired
     PasswordEncoder encoder;
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     @PostMapping(value = "/add",consumes =(MediaType.APPLICATION_JSON_VALUE))
       public User ajout (@RequestBody(required = false)RegisterUser registerUser){
         User us =new User();
@@ -108,33 +108,10 @@ public class UserController {
         roles.add(role);
         u.setRoles(roles);
         u.setPartenaire(p);
-        u.setCompte(c);
         userRepository.save(u);
 
         return partenaireRepository.save(p);
     }
 
-  //DEPOT
-
-    @Autowired
-    DepotRepository depotRepository;
-    @PostMapping(value = "/deposer",consumes =(MediaType.APPLICATION_JSON_VALUE))
-    public ResponseEntity<String> depot (@RequestBody(required = false) RegisterUser  registerUser){
-        Depot d =new Depot();
-        d.setDatedepot(new Date());
-        d.setMontant(registerUser.getMontant());
-        d.setCompte(registerUser.getCompte());
-
-        User user=userDetailsService.getUserConnecte();
-        d.setUser(user);
-
-        //ajout du montant du depot sur le solde du compte
-        //Compte cpt= compteRepository.findById(registerUser.getCompte().getId()).orElseThrow();
-       // cpt.setSolde(cpt.getSolde()+d.getMontant());
-        //compteRepository.save(cpt);
-        depotRepository.save(d);
-
-        return new ResponseEntity<>("depot reussit", HttpStatus.OK);
-    }
 
 }

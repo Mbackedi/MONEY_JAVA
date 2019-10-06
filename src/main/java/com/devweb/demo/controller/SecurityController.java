@@ -1,9 +1,7 @@
 package com.devweb.demo.controller;
 
-import com.devweb.demo.model.AcountUser;
-import com.devweb.demo.model.Depot;
-import com.devweb.demo.model.RegisterUser;
-import com.devweb.demo.model.User;
+import com.devweb.demo.model.*;
+import com.devweb.demo.repository.CompteRepository;
 import com.devweb.demo.repository.DepotRepository;
 import com.devweb.demo.repository.UserRepository;
 import com.devweb.demo.services.UserDetailsServiceImpl;
@@ -29,6 +27,8 @@ public class SecurityController {
     UserDetailsServiceImpl userDetailsService;
     @Autowired
     DepotRepository depotRepository;
+    @Autowired
+    CompteRepository compteRepository;
     @PostMapping(value = "/deposer",consumes =(MediaType.APPLICATION_JSON_VALUE))
     public ResponseEntity<String> depot (@RequestBody(required = false) RegisterUser registerUser){
         Depot d = new Depot();
@@ -40,12 +40,12 @@ public class SecurityController {
         d.setUser(user);
 
         //ajout du montant du depot sur le solde du compte
-        //Compte cpt= compteRepository.findById(registerUser.getCompte().getId()).orElseThrow();
-        // cpt.setSolde(cpt.getSolde()+d.getMontant());
-        //compteRepository.save(cpt);
+        Compte cpt= compteRepository.findById(registerUser.getCompte().getId()).orElseThrow();
+        cpt.setSolde(cpt.getSolde()+d.getMontant());
+        compteRepository.save(cpt);
         depotRepository.save(d);
 
-        return new ResponseEntity<>("depot reussit", HttpStatus.OK);
+        return new ResponseEntity<>("depot effecué", HttpStatus.OK);
     }
 
 //ALOUER COMPTE A UN USER
@@ -68,14 +68,13 @@ public class SecurityController {
 
     //BLOQUER USER
 
-
     @PutMapping(value = "/statut/{id}",consumes =(MediaType.APPLICATION_JSON_VALUE))
     public ResponseEntity<String> blockUser (@PathVariable("id")long id) throws Exception {
         User etat= userRepository.findById(id).orElseThrow(
                 ()->new Exception ("Ce user n'existe pas")
         );
 
-        if(etat.getUsername().equals("kabirou")){
+        if(etat.getUsername().equals("dioplemaire")){
             return new ResponseEntity<>(etat.getUsername()+ " Ne peut pas être bloqué car c'est le super admin", HttpStatus.OK);
         }
         if (etat.getStatut().equals("debloquer")){
