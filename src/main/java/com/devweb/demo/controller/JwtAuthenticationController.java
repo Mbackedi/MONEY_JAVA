@@ -3,6 +3,8 @@ package com.devweb.demo.controller;
 import com.devweb.demo.config.JwtTokenUtil;
 import com.devweb.demo.model.JwtRequest;
 import com.devweb.demo.model.JwtResponse;
+import com.devweb.demo.model.User;
+import com.devweb.demo.repository.UserRepository;
 import com.devweb.demo.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -37,9 +39,20 @@ public class    JwtAuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }
-
+    @Autowired
+    UserRepository userRepository;
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE })
     public @ResponseBody String createLoginToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+
+        User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow();
+        if (user.getStatut().equals("bloquer")){
+            return "Cet utilisateur est bloqué";
+        }
+
+        if (user.getPartenaire().getStatut().equals("bloquer")){
+            return "Votre partenaire est bloqué";
+        }
+
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());

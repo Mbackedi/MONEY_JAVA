@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-//DEPOT
+// FAIRE UN DEPOT
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/security")
@@ -62,6 +62,32 @@ public class SecurityController {
         userRepository.save(user);
 
         return new ResponseEntity<>("Compte Utilsateur Ajouté Avec Succés", HttpStatus.OK);
+    }
+
+
+
+    //BLOQUER USER
+
+
+    @PutMapping(value = "/statut/{id}",consumes =(MediaType.APPLICATION_JSON_VALUE))
+    public ResponseEntity<String> blockUser (@PathVariable("id")long id) throws Exception {
+        User etat= userRepository.findById(id).orElseThrow(
+                ()->new Exception ("Ce user n'existe pas")
+        );
+
+        if(etat.getUsername().equals("kabirou")){
+            return new ResponseEntity<>(etat.getUsername()+ " Ne peut pas être bloqué car c'est le super admin", HttpStatus.OK);
+        }
+        if (etat.getStatut().equals("debloquer")){
+            etat.setStatut("bloquer");
+            userRepository.save(etat);
+            return new ResponseEntity<>(etat.getUsername()+ " a été bloqué", HttpStatus.OK);
+        }
+        else{
+            etat.setStatut("debloquer");
+            userRepository.save(etat);
+            return new ResponseEntity<>(etat.getUsername()+ " a été débloqué", HttpStatus.OK);
+        }
     }
 
 }
