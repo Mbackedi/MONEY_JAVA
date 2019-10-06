@@ -74,7 +74,7 @@ public class SecurityController {
                 ()->new Exception ("Ce user n'existe pas")
         );
 
-        if(etat.getUsername().equals("dioplemaire")){
+        if(etat.getUsername().equals("mbackedi")){
             return new ResponseEntity<>(etat.getUsername()+ " Ne peut pas être bloqué car c'est le super admin", HttpStatus.OK);
         }
         if (etat.getStatut().equals("debloquer")){
